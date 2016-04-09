@@ -26,7 +26,9 @@ dim=15;
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); //scale linearly when image smalled than texture
   glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, img->sizeX, img->sizeY,1,GL_RGB, GL_UNSIGNED_BYTE, img->data);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
+floor_mid[0]=0;
+floor_mid[1]=-dim/2;
+floor_mid[2]=0;
 
 glBegin(GL_QUADS);
 /* Walls */

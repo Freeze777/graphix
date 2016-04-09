@@ -51,16 +51,18 @@ plymodel2->computeScaleFactor(dim);
 void Model::drawScene(float dim){
 	drawAxis(5*dim);
 	//markPoints(dim);
-
+ //   float v_shift1=plymodel1->scale_factor*(ply1->vz_max - ply1->vz_min)/2.0;
+   // float v_shift2=plymodel2->scale_factor*(ply2->vz_max - ply2->vz_min)/2.0;
+    
     glPushMatrix(); 
-    glTranslatef(-1,-3.32*dim,0);
+    glTranslatef(-1,-7.5,0);
     glStencilFunc(GL_ALWAYS,1, -1);
 	plymodel1->draw(1);
     glPopMatrix();
 
     glPushMatrix();   
-    glTranslatef(1,-3.21*dim,0);
-    glRotatef(-90,1,0,0);
+    glTranslatef(1,-7.5,0);
+    //glRotatef(-90,1,0,0);
     glStencilFunc(GL_ALWAYS,2, -1);
     plymodel2->draw(0);
     glPopMatrix();

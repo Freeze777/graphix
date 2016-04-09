@@ -5,6 +5,7 @@ void PlyModel::draw(int txtMode)
  //readTexture2Buffer("textures/floor.bmp",64,64);
   //glEnable(GL_LIGHTING);
   // glEnable( GL_TEXTURE_2D );
+	GLfloat zPlane[] = { 1.0f, 1.0f, 1.0f, 1.0f };
   GLuint txture;
   glGenTextures(1,&txture);
   glBindTexture(GL_TEXTURE_2D, txture);
@@ -14,14 +15,29 @@ void PlyModel::draw(int txtMode)
  glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, texture->sizeX, texture->sizeY,1,
   GL_RGB, GL_UNSIGNED_BYTE, texture->data);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+ // glEnable(GL_TEXTURE_GEN_S);
+//glEnable(GL_TEXTURE_GEN_T);
+			/* glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+            glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+            glTexGenfv(GL_S, GL_EYE_PLANE, zPlane);
+            glTexGenfv(GL_T, GL_EYE_PLANE, zPlane);
+glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+            glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+  glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+            glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+            glTexGenfv(GL_S, GL_OBJECT_PLANE, zPlane);
+            glTexGenfv(GL_T, GL_OBJECT_PLANE, zPlane);*/
+    float v_shift=(ply->vy_max - ply->vy_min)/2.0;
+    
 
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
 
-  glScalef(scale_factor,scale_factor,scale_factor);
+ glScalef(scale_factor,scale_factor,scale_factor);
     //glTranslatef(-centroid[0]-shift[0],-centroid[1]-shift[1],-centroid[2]-shift[2]);
   //glTranslatef(-centroid[0]+shift[0],-centroid[1]+shift[1],-centroid[2]+shift[2]);
-  glTranslatef(-centroid[0],-centroid[1],-centroid[2]);
+  //glTranslatef(-centroid[0],-centroid[1]-7.5,-centroid[2]);
+  glTranslatef(-centroid[0],-centroid[1]+v_shift,-centroid[2]);
 
     //glColor3f(0.75,0.68,0.204);
 
@@ -31,6 +47,7 @@ void PlyModel::draw(int txtMode)
     PlyUtility::Vertex ** vl=ply->getVertexList();
     //double cyl_coords[]={0.0,0.0,0.0};
     double uvCoords[]={0.0,0.0};
+    double prevUV[]={-1.0,-1.0};
 
     for (int var = 0; var < fcount ; var++) {
 
@@ -41,16 +58,44 @@ void PlyModel::draw(int txtMode)
 
       // glNormal3d(normals[var].x(),normals[var].y(),normals[var].z());
         float sc=1.0f;
+        prevUV[0]=-1.0;
+        prevUV[1]=-1.0;
         for (int t = 0; t < fl[var]->nverts; t++)
         {
-            int vIndex=fl[var]->verts[t];
+              int vIndex=fl[var]->verts[t];
 	       
 	          glNormal3d(normals_vertex[vIndex].x(),normals_vertex[vIndex].y(),normals_vertex[vIndex].z());
               
               getUVCoords(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z,uvCoords,txtMode,vIndex);
-              
+               /*  if(prevUV[1]>0 && prevUV[1]>0 && t==1)
+              {
+              	
+              	if(uvCoords[1] < 0.75 && prevUV[1] > 0.75)
+				{	printf("here\n");
+					uvCoords[1]+= 1;
+				}
+				else if(uvCoords[1] > 0.75 && prevUV[1] < 0.75)
+				{printf("here\n");
+					uvCoords[1]-= 1;
+				}
+			  }
+			 if(prevUV[0]>0 && prevUV[0]>0 && t==1 )
+              {
+              	
+              	if(uvCoords[0] < 0.75 && prevUV[0] > 0.75)
+				{	printf("here\n");
+					uvCoords[0] += 1.0;
+				}
+				else if(uvCoords[0] > 0.75 && prevUV[0] < 0.75)
+				{printf("here\n");
+					uvCoords[0]-= 1.0;
+				}
+			  }*/
               glTexCoord2f(uvCoords[0],uvCoords[1]);
+           
               glVertex3f(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z);
+        		prevUV[0]=uvCoords[0];
+        		prevUV[1]=uvCoords[1];
         }
 
         glEnd();

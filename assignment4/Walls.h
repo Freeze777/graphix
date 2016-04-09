@@ -11,6 +11,7 @@ float v[4][3];
 Image *img;
 
 public:
+float floor_mid[3]={7.50,7.50,7.50};
 void draw(float dim);
 void readNewTexture(char *filename);
 Walls(char *filename);

@@ -14,8 +14,8 @@ private:
 //GLfloat centroid[3]={0.02,-0.09 ,-0.015};
 GLfloat centroid[3]={0.0,0.0 ,0.0};
 GLfloat shift[3];
-GLfloat scale_factor=1.0;
-PlyUtility *ply;
+
+
 Vector *normals_face;
 Vector *normals_vertex;
 
@@ -23,6 +23,8 @@ int txtWidth;
 int txtHeght;
    
 public:
+GLfloat scale_factor=1.0;
+    PlyUtility *ply;
     Image *texture;
     void draw(int txtMode);
     void computeNormal();
