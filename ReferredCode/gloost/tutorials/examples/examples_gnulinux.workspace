@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="gloost examples Workspace gnulinux">
+		<Project filename="gloost_gpgpu_example/gloost_gpgpu_example_gnulinux.cbp">
+			<Depends filename="../../gnulinux/library_build_with_codeblocks/library_build_with_codeblocks.cbp" />
+		</Project>
+		<Project filename="../../gnulinux/library_build_with_codeblocks/library_build_with_codeblocks.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

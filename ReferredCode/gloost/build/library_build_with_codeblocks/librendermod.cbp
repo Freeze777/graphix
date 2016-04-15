@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="librendermod" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../lib/rendermod_db" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj_files/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-DGLOOST_GNULINUX" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../lib/rendermod" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj_files/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-DGLOOST_GNULINUX" />
+				</Compiler>
+			</Target>
+			<Target title="Debug_win">
+				<Option output="../lib/rendermod_db_win" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj_files/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-DGLOOST_WINDOWS" />
+					<Add option="-DWIN32" />
+					<Add option="-D__CRT__NO_INLINE" />
+					<Add option="-DGLEW_STATIC" />
+					<Add directory="../../win32/contrib/include" />
+					<Add directory="C:/lib/boost_1_55_0_mingw4.9.2" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+			<Target title="Release_win">
+				<Option output="../lib/rendermod_win" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj_files/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-march=core2" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-w" />
+					<Add option="-g" />
+					<Add option="-DGLOOST_WINDOWS" />
+					<Add option="-DWIN32" />
+					<Add option="-D__CRT__NO_INLINE" />
+					<Add option="-DGLEW_STATIC" />
+					<Add directory="../../win32/contrib/include" />
+					<Add directory="C:/lib/boost_1_55_0_mingw4.9.2" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fexceptions" />
+			<Add option="-fopenmp" />
+			<Add directory="../../src" />
+			<Add directory="../../../gloost/contrib/tinyxml2/src" />
+		</Compiler>
+		<Linker>
+			<Add library="gomp" />
+		</Linker>
+		<Unit filename="../../src/rendermod/ModuleBase.cpp" />
+		<Unit filename="../../src/rendermod/ModuleBase.h" />
+		<Unit filename="../../src/rendermod/RendererBase.cpp" />
+		<Unit filename="../../src/rendermod/RendererBase.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

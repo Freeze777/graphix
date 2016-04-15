@@ -1,0 +1,19 @@
+1.Make the "assignment3" folder as the present working directory in the terminal.
+2.Run "make all" command.
+3.Run the command "sh run.sh".
+
+Instructions to use:
+i) Use "LEFT ARROW","RIGHT ARROW","UP ARROW" and "DOWN ARROW" keys to TRANSLATE the camera left,right,up and down respectively.	
+
+ii) Use "+/-" keys to SCALE the scene .
+
+iii) While viewing the model, use the "LEFT MOUSE BUTTON" to move the camera along the scene.
+   The model will be rotated about the centroid and by an amount defined by the arc between the two clicked points.  
+
+iv) Use 'A','S' and 'D' keys to turn OFF and ON the 3 light sources.
+
+v) Click on the models using "RIGHT_MOUSE_BUTTON" to dynamically change their textures.
+
+vi) Default window size is 1000 x 650. Resize to fullscreen for convenience.	
+  
+ 
