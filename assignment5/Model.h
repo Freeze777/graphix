@@ -4,27 +4,23 @@
 #include "PlyUtility.h"
 #include "PlyModel.h"
 #include "Walls.h"
+#include "SceneNode.h"
 
 class Model{
 GLfloat origin[3] = {0.0, 0.0, 0.0};
 
 public:
-PlyModel *plymodel1;
-PlyModel *plymodel2;
-PlyModel *plymodel3;
-PlyUtility *ply1;
-PlyUtility *ply2;
-PlyUtility *ply3;
+
+SceneNode * root;
 Walls *walls;
 int flag=0;
-Model(char *filename);
+Model();
 ~Model();
 
-void readModelsFromFile(char *filename1,char *filename2,char *filename3);
-void drawScene(float dim,float x,float y,float z);
+void draw();
 void drawAxis(float dim);
 void markPoints(float dim);
-void setScaleFactor(float dim); 
+
 
 };
 

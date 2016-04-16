@@ -2,11 +2,11 @@ ply
 format ascii 1.0
 comment created by platoply
 element vertex 8
-property float32 x
-property float32 y
-property float32 z
+property float x
+property float y
+property float z
 element face 6
-property list uint8 int32 vertex_indices
+property list uint int vertex_indices
 end_header
 -1 -1 -1 
 1 -1 -1 
@@ -21,4 +21,4 @@ end_header
 4 6 2 1 5 
 4 3 7 4 0 
 4 7 3 2 6 
-4 5 1 0 4 
+4 5 1 0 4

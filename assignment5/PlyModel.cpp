@@ -1,6 +1,6 @@
 #include "PlyModel.h"
 
-void PlyModel::draw(int txtMode,float dx,float dy,float dz,int trans_flag)
+void PlyModel::draw()
 {
 
 
@@ -15,7 +15,7 @@ void PlyModel::draw(int txtMode,float dx,float dy,float dz,int trans_flag)
 
 
 
-  float v_shift=(ply->vy_max - ply->vy_min)/2.0;
+ /* float v_shift=(ply->vy_max - ply->vy_min)/2.0;
 
 
   glMatrixMode(GL_MODELVIEW);
@@ -26,7 +26,7 @@ void PlyModel::draw(int txtMode,float dx,float dy,float dz,int trans_flag)
     glTranslatef(-centroid[0],-centroid[1]+v_shift,-centroid[2]);
   else
     glTranslatef(-centroid[0]-(dx/scale_factor),-centroid[1]+v_shift-(dy/scale_factor),-centroid[2]-(dz/scale_factor));
-  
+  */
   int fcount=ply->getFaceCount();
   PlyUtility::Face ** fl=ply->getFaceList();
   PlyUtility::Vertex ** vl=ply->getVertexList();
@@ -49,7 +49,7 @@ void PlyModel::draw(int txtMode,float dx,float dy,float dz,int trans_flag)
 
       glNormal3d(normals_vertex[vIndex].x(),normals_vertex[vIndex].y(),normals_vertex[vIndex].z());
 
-      getUVCoords(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z,uvCoords,txtMode,vIndex);
+      getUVCoords(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z,uvCoords,0,vIndex);
 
       glTexCoord2f(uvCoords[0],uvCoords[1]);
 
@@ -170,7 +170,7 @@ if(fl[var]->nverts==3){
 
 }
 }
-void PlyModel::readTexture2Buffer(char *filename,int width,int height){
+void PlyModel::readTexture2Buffer(char *filename){
 
   texture=texture->loadTexture(filename);
 

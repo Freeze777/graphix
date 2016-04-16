@@ -35,9 +35,9 @@ void myDisplay(void);
 void specialKeys(int key,int x,int y);
 void myMouseMotion(int x, int y) ;
 
-Controller *controller;
-Model *model;
-View *view;
+Controller *controller=NULL;
+Model * model=NULL;
+View *view=NULL;
 float SCREEN_WIDTH=1000;
 float SCREEN_HEIGHT=650;
 int indx=0;
@@ -114,7 +114,7 @@ void myIdle(void) {
 
   //animate(now_T);
 
-    controller->dx =samples[indx].x ;
+   /* controller->dx =samples[indx].x ;
     controller->dz =samples[indx].y ;
 
     if(indx == num_sample_points-1)
@@ -122,7 +122,9 @@ void myIdle(void) {
     else if(indx == 0)
         fwd=1;
     if(fwd)indx++;
-    else indx--;
+    else indx--;*/
+    if(model)
+    model->root->rotateLocalTransformMatrix(0.01,glm::vec3(0,1,0));
 
   glutPostRedisplay();
 }
@@ -172,20 +174,49 @@ int main(int argc, char *argv[]) {
     points[2].setxy(7.5,7.5);
     computeBezierCurvePoints(points,3);
 
-    if(argc!=8)
+  /*  if(argc!=7)
     {
         printf("Insufficient arguments..!!\n");
         exit(0);
     }
-    model=new Model(argv[7]);
-    model->readModelsFromFile(argv[1],argv[2],argv[3]);
+*/
+    model=new Model();
+    PlyUtility util;
+    PlyModel *mesh;
+    util.readPlyFile("plyfiles/cube.ply");
+    mesh=new PlyModel(&util);
+    mesh->computeNormal();
+    mesh->computeCentroid();
+    mesh->readTexture2Buffer("textures/checker.bmp");
+    SceneNode * root=new SceneNode(mesh,"cube");
+    root->initTransformationMatrix();
 
-   // if(strcmp("NA",argv[3])!=0)
-    model->plymodel1->readTexture2Buffer(argv[4],64,64);
-
-    //if(strcmp("NA",argv[4])!=0)
-    model->plymodel2->readTexture2Buffer(argv[5],64,64);
-    model->plymodel3->readTexture2Buffer(argv[6],64,64);
+    PlyUtility util1;
+    PlyModel *mesh1;
+    util1.readPlyFile("plyfiles/sphere.ply");
+    mesh1=new PlyModel(&util1);
+    mesh1->computeNormal();
+    mesh1->computeCentroid();
+    mesh1->readTexture2Buffer("textures/apple.bmp");
+    SceneNode * child1=new SceneNode(mesh1,"sphere");
+    child1->initTransformationMatrix();
+    child1->translateLocalTransformMatrix(glm::vec3(0.0,0.0,2.0));
+    root->attachChild(child1);
+ 
+    PlyUtility util2;
+    PlyModel *mesh2;
+    util2.readPlyFile("plyfiles/cylinder.ply");
+    mesh2=new PlyModel(&util2);
+    mesh2->computeNormal();
+    mesh2->computeCentroid();
+    mesh2->readTexture2Buffer("textures/metal_.bmp");
+    SceneNode * child2=new SceneNode(mesh2,"cylinder");
+    child2->initTransformationMatrix();
+    child2->translateLocalTransformMatrix(glm::vec3(0.0,0.0,-2.0));
+    root->attachChild(child2);
+    
+    model->root=root;    
+    //root->printChildren();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     view=new View(SCREEN_WIDTH,SCREEN_HEIGHT);

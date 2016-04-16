@@ -32,12 +32,12 @@ void  View::initialize(double dim,int fov){
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fov,screenWidth/screenHeight,dim,25*dim);
+    gluPerspective(fov,screenWidth/screenHeight,dim,20*dim);
 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0,0,3.5*dim, 0,0,0 , 0,1,0);
+    gluLookAt(0,0,6, 0,0,0 , 0,1,0);
     
     glClearColor(0.0,0.0,0.0,0.0);
   

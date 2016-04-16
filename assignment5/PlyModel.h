@@ -11,23 +11,18 @@
 class PlyModel{
 
 private:
-GLfloat centroid[3]={0.0,0.0 ,0.0};
-GLfloat shift[3];
 
 PlyUtility *ply;
 Vector *normals_face;
 Vector *normals_vertex;
 
-int txtWidth;
-int txtHeght;
-   
 public:
 GLfloat scale_factor=1.0;
-    
+GLfloat centroid[3]={0.0,0.0 ,0.0}; 
     Image *texture;
-    void draw(int txtMode,float dx,float dy,float dz,int trans_flag);
+    void draw();
     void computeNormal();
-    void readTexture2Buffer(char *filename,int width,int height);
+    void readTexture2Buffer(char *filename);
     void freeTextBuffer();
     void computeCentroid();
     void convert2Cylindrical( double x,double y,double z,double *res);

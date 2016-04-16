@@ -67,12 +67,12 @@ void  Controller::display_callback() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION,spotDir2);
-    gluLookAt(eye_vector.x(),eye_vector.y(),eye_vector.z(), 0,-8,0 , 0,1,0);
+    gluLookAt(eye_vector.x(),eye_vector.y(),eye_vector.z(), 0,0,0 , 0,1,0);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
      
-    model->setScaleFactor(dim);
-    model->drawScene(dim,dx,dy,dz);
+    
+    model->draw();
 
     glFlush();
    
@@ -100,12 +100,12 @@ void  Controller::reshape_callback(int w,int h)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION,spotDir2);
-    gluLookAt(eye_vector.x(),eye_vector.y(),eye_vector.z(), 0,-8,0 , 0,1,0);
+    gluLookAt(eye_vector.x(),eye_vector.y(),eye_vector.z(), 0,0,0 , 0,1,0);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
     
-    model->setScaleFactor(dim);
-    model->drawScene(dim,dx,0,dz);
+   
+    model->draw();
 
 
 }
