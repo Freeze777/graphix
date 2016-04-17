@@ -26,10 +26,10 @@ void  View::createWindow(char *windowName){
 }
 void  View::initialize(){
     glViewport(0,0,screenWidth,screenHeight);
-    
+
    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(65,screenWidth/screenHeight,1,20);
+    gluPerspective(70,screenWidth/screenHeight,1,20);
 
 
     glMatrixMode(GL_MODELVIEW);
@@ -38,7 +38,7 @@ void  View::initialize(){
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_STENCIL_TEST);
-     glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0); 
     glEnable(GL_LIGHT1); 
     glEnable(GL_LIGHT2);

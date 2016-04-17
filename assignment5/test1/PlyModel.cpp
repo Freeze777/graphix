@@ -72,8 +72,8 @@ void PlyModel::getUVCoords( double x,double y,double z,double *uv)
       uv[1]=res[2]/ply->vz_max;
 	}else if(txtMode==0)
 	{
-		uv[0]=x*z/(10);
-		uv[1]=y*z/(10);
+		uv[0]=x*z/(50);
+		uv[1]=y*z/(50);
 	}else if(txtMode==2)
 	{
 		Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);

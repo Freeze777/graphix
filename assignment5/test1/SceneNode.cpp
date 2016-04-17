@@ -68,12 +68,15 @@ void SceneNode::scaleLocalTransformMatrix(glm::vec3 scale)
 void SceneNode::translateLocalTransformMatrix(glm::vec3 trans)
 {
 	glm::mat4 tmp=glm::translate(glm::mat4(1.0f),trans);
+	//local_transform=tmp*local_transform;
 	local_transform=tmp*local_transform;
 }
 
 void SceneNode::rotateLocalTransformMatrix(float angle,glm::vec3 axis)
 {
-	local_transform=glm::rotate(local_transform,angle,axis);
+	//local_transform=glm::rotate(local_transform,angle,axis);
+	glm::mat4 tmp=glm::rotate(glm::mat4(1.0f),angle,axis);
+	local_transform=local_transform*tmp;
 }
 void SceneNode::setTransformationMatrix(glm::mat4 mat)
 {

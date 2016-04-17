@@ -28,9 +28,10 @@ Arcball arcball(SCREEN_WIDTH,SCREEN_HEIGHT,1.5);
 int arcball_on=false;
 Vector eye_vector(2.5,2.5,2.5);
 
-#define speed 100
+#define speed 150
 int indx=0,fwd=1,cnt=0,period=0;
-bool hooked=false,cam_toggle=false;
+bool hooked=false;
+int cam_toggle=0;
 
 
 void myKeyBoard(unsigned char key,int x,int y)
@@ -38,19 +39,19 @@ void myKeyBoard(unsigned char key,int x,int y)
 
  switch(key)
  {
- 	case 27: exit(0);
- 			 break;
- 	case 'c':
- 	case 'C': cam_toggle=!cam_toggle;
+    case 27: exit(0);
+             break;
+    case 'c':
+    case 'C': cam_toggle=(++cam_toggle)%3;
 
- 			break;
+            break;
 
  }
 }
 
 int main(int argc, char *argv[]) {
         
-   	root=createSceneGraph();
+    root=createSceneGraph();
 
     root->printChildren();
     view=new View(SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -59,7 +60,7 @@ int main(int argc, char *argv[]) {
     
     view->createWindow("SceneGraph");
 
-  	view->initialize();
+    view->initialize();
     //register callbacks
     glutDisplayFunc(myDisplay);
     glutReshapeFunc(myReshape);
@@ -76,82 +77,82 @@ int main(int argc, char *argv[]) {
 
 void myIdle(void) {
   
-	/*srand(time(NULL));
-	float x = ((rand()%1000+1)-500.0)/20000.0;
-	float y = ((rand()%1000+1)-500.0)/20000.0;
-	float z = ((rand()%1000+1)-500.0)/20000.0;
-	float phi = ((rand()%1000+1)-500.0)/5000.0;
+    /*srand(time(NULL));
+    float x = ((rand()%1000+1)-500.0)/20000.0;
+    float y = ((rand()%1000+1)-500.0)/20000.0;
+    float z = ((rand()%1000+1)-500.0)/20000.0;
+    float phi = ((rand()%1000+1)-500.0)/5000.0;
 */
 
-  //  root->rotateLocalTransformMatrix(0.01,glm::vec3(0,1,0));
+    //root->rotateLocalTransformMatrix(0.01,glm::vec3(0,1,0));
     SceneNode * cube=root->getChildren()[2];
-	//cube->rotateLocalTransformMatrix(0.05,glm::vec3(0,1,0));
-	SceneNode * f16=root->getChildren()[5];
-	//f16->translateLocalTransformMatrix(glm::vec3(x,y,z));
-	//f16->rotateLocalTransformMatrix(phi,glm::vec3(1,0,0));
-	//f16->rotateLocalTransformMatrix(0.08,glm::vec3(1,0,0));
+   // cube->rotateLocalTransformMatrix(0.05,glm::vec3(0,1,0));
+    SceneNode * f16=root->getChildren()[5];
+    //f16->translateLocalTransformMatrix(glm::vec3(x,y,z));
+    //f16->rotateLocalTransformMatrix(phi,glm::vec3(1,0,0));
+    //f16->rotateLocalTransformMatrix(0.08,glm::vec3(1,0,0));
 
-	cnt++;
-	if(cnt==speed)
-		{	cnt=0;
-			period=(++period)%4;
-			switch(period){
-			case 0:f16->rotateLocalTransformMatrix(+135,glm::vec3(0,1,0));
-					//f16->rotateLocalTransformMatrix(phi,glm::vec3(0,1,-1));
-			break;
-			case 1:
-			break;
-			case 2:f16->rotateLocalTransformMatrix(-135,glm::vec3(0,1,0));
-				//f16->rotateLocalTransformMatrix(phi,glm::vec3(0,-1,1));
-			break;
-			case 3:
-			  if(hooked){
-					SceneNode * porsche=cube->getChildren()[3];
-					porsche=cube->detachChild(porsche);
-					porsche->initTransformationMatrix();
-					porsche->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,-4.0));
-					root->attachChild(porsche);
-					
-				}
-				else{
-					SceneNode * porsche=root->getChildren()[3];
-					porsche=root->detachChild(porsche);
-					porsche->translateLocalTransformMatrix(glm::vec3(-4.0,6.0,4.5));
-					cube->attachChild(porsche);
-					
-				}
-				hooked=!hooked;
-			break;
+    cnt++;
+    if(cnt==speed)
+        {   cnt=0;
+            period=(++period)%4;
+            switch(period){
+            case 0:f16->rotateLocalTransformMatrix(+135,glm::vec3(0,1,0));
+                    //f16->rotateLocalTransformMatrix(phi,glm::vec3(0,1,-1));
+            break;
+            case 1:
+            break;
+            case 2:f16->rotateLocalTransformMatrix(-135,glm::vec3(0,1,0));
+                //f16->rotateLocalTransformMatrix(phi,glm::vec3(0,-1,1));
+            break;
+            case 3:
+              if(hooked){
+                    SceneNode * porsche=cube->getChildren()[3];
+                    porsche=cube->detachChild(porsche);
+                    porsche->initTransformationMatrix();
+                    porsche->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,-4.0));
+                    root->attachChild(porsche);
+                    
+                }
+                else{
+                    SceneNode * porsche=root->getChildren()[3];
+                    porsche=root->detachChild(porsche);
+                    porsche->translateLocalTransformMatrix(glm::vec3(-4.0,6.0,4.5));
+                    cube->attachChild(porsche);
+                    
+                }
+                hooked=!hooked;
+            break;
 
-			}
-			
-		}
-	
-	switch(period){
-		case 0:cube->translateLocalTransformMatrix(glm::vec3(-8.0/speed,0,0));
-			   f16->translateLocalTransformMatrix(glm::vec3(-4.0/speed,0,-4.0/speed));
-		break;
-		case 1:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/speed));
-			 f16->translateLocalTransformMatrix(glm::vec3(-4.0/speed,0,-4.0/speed));
-		break;
-		break;
-		case 2:cube->translateLocalTransformMatrix(glm::vec3(+8.0/speed,0,0));
-			 f16->translateLocalTransformMatrix(glm::vec3(4.0/speed,0,4.0/speed));
-		break;
-		case 3:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/speed));
-    		f16->translateLocalTransformMatrix(glm::vec3(4.0/speed,0,4.0/speed));
-		break;
+            }
+            
+        }
+    
+    switch(period){
+        case 0:cube->translateLocalTransformMatrix(glm::vec3(-8.0/speed,0,0));
+               f16->translateLocalTransformMatrix(glm::vec3(-4.0/speed,0,-4.0/speed));
+        break;
+        case 1:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/speed));
+             f16->translateLocalTransformMatrix(glm::vec3(-4.0/speed,0,-4.0/speed));
+        break;
+        break;
+        case 2:cube->translateLocalTransformMatrix(glm::vec3(+8.0/speed,0,0));
+             f16->translateLocalTransformMatrix(glm::vec3(4.0/speed,0,4.0/speed));
+        break;
+        case 3:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/speed));
+            f16->translateLocalTransformMatrix(glm::vec3(4.0/speed,0,4.0/speed));
+        break;
     }
   glutPostRedisplay();
 }
 SceneNode * createSceneGraph(){
-	PlyUtility * util=new PlyUtility();
+    PlyUtility * util=new PlyUtility();
     PlyModel * floor;
     util->readPlyFile("plyfiles/floor.ply");
     floor=new PlyModel(util,0);
     floor->computeNormal();
     floor->computeCentroid();
-    floor->readTexture2Buffer("textures/floor.bmp");
+    floor->readTexture2Buffer("textures/checker_.bmp");
     root=new SceneNode(floor,"floor",1);
     root->initTransformationMatrix();
 
@@ -161,7 +162,7 @@ SceneNode * createSceneGraph(){
     cube=new PlyModel(util1,2);
     cube->computeNormal();
     cube->computeCentroid();
-    cube->readTexture2Buffer("textures/checker.bmp");
+    cube->readTexture2Buffer("textures/goldhair.bmp");
     SceneNode * child1=new SceneNode(cube,"cube",2);
     child1->initTransformationMatrix();
     child1->translateLocalTransformMatrix(glm::vec3(4.0,-3.9,4.0));
@@ -173,7 +174,7 @@ SceneNode * createSceneGraph(){
     porsche=new PlyModel(util2,1);
     porsche->computeNormal();
     porsche->computeCentroid();
-    porsche->readTexture2Buffer("textures/wood_.bmp");
+    porsche->readTexture2Buffer("textures/blood.bmp");
     SceneNode * child2=new SceneNode(porsche,"porsche",3);
     child2->initTransformationMatrix();
     child2->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,-4.0));
@@ -185,24 +186,23 @@ SceneNode * createSceneGraph(){
     car=new PlyModel(util3,1);
     car->computeNormal();
     car->computeCentroid();
-    car->readTexture2Buffer("textures/metal_.bmp");
+    car->readTexture2Buffer("textures/bubbles.bmp");
     SceneNode * child3=new SceneNode(car,"car",4);
     child3->initTransformationMatrix();
     child3->translateLocalTransformMatrix(glm::vec3(-0.1,1.5,-0.5));
     child1->attachChild(child3);
 
-	PlyUtility * util4=new PlyUtility();
+    PlyUtility * util4=new PlyUtility();
     PlyModel *f16;
     util4->readPlyFile("plyfiles/f16.ply");
     f16=new PlyModel(util4,2);
     f16->computeNormal();
     f16->computeCentroid();
-    f16->readTexture2Buffer("textures/apple.bmp");
+    f16->readTexture2Buffer("textures/redhair.bmp");
     SceneNode * child4=new SceneNode(f16,"f16",5);
     child4->initTransformationMatrix();
-    //child4->translateLocalTransformMatrix(glm::vec3(0,-1.0,0));
     child4->translateLocalTransformMatrix(glm::vec3(4.0,1.5,4.0));
-   	child4->rotateLocalTransformMatrix(-45,glm::vec3(0,1,0));
+    child4->rotateLocalTransformMatrix(-45,glm::vec3(0,1,0));
     root->attachChild(child4);
 
 return root;
@@ -212,11 +212,13 @@ void myMouse(int button, int state, int x, int y) {
 
  if(state==GLUT_DOWN && button==GLUT_LEFT_BUTTON)
     {
+        if(!cam_toggle){
         arcball_on = true;
         arcball.set_current_xy(x,y);
         arcball.set_last_xy(x,y);
-
+    	}
     }else {
+    	if(!cam_toggle)
         arcball_on = false;
     }
     glutPostRedisplay();
@@ -224,13 +226,15 @@ void myMouse(int button, int state, int x, int y) {
 }
 void myMouseMotion(int x, int y) {
 
-    if (arcball_on) {  // if left button is pressed
+    if (arcball_on && !cam_toggle) {  // if left button is pressed
         arcball.set_current_xy(x,y);
      }
      glMatrixMode(GL_MODELVIEW);
 
     //arcball->rotateModelvthMouse(dim);
+     if(!cam_toggle)
     arcball.rotateCameravthMouse(2.0,&eye_vector);
+    
     glutPostRedisplay();
   
 
@@ -242,20 +246,36 @@ void myDisplay() {
  
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    if(!cam_toggle)
-    {	
-    	gluLookAt(eye_vector.x(),eye_vector.y(),eye_vector.z(),0,0,0 , 0,1,0);
-    }
-    else
-    {
-    	glm::vec4 eye=glm::vec4(eye_vector.x(),eye_vector.y(),eye_vector.z(),1.0);
-    	glm::mat4 transform=(root->getChildren()[5])->getGlobalTransform();
-		eye=transform*eye;
-    	glm::vec3 eye_=glm::vec3(eye);
-    	gluLookAt(eye_.x/4.0,eye_.y/0.95,eye_.z/4.0,0,0,0 ,0,1,0);
+    glm::vec4 eye;
+    glm::mat4 transform;
+    glm::vec3 eye_;
+    switch(cam_toggle)
+    {   
+    
+    case 0 :    gluLookAt(eye_vector.x(),eye_vector.y(),eye_vector.z(),0,0,0,0,1,0);
+                break;
+    
+    case 1 ://eye=glm::vec4(eye_vector.x(),eye_vector.y(),eye_vector.z(),1.0);
+    		eye=glm::vec4(2.5,2.5,2.5,1.0);
+            transform=(root->getChildren()[5])->getGlobalTransform();
+            //glm::mat4 transform=(root->getChildren()[2])->getLocalTransform();
+            eye=transform*eye;
+            eye_=glm::vec3(eye);
+            gluLookAt(eye_.x/4.0,eye_.y/0.95,eye_.z/4.0,0,0,0 ,0,1,0);
+            break;
+	case 2 :eye=glm::vec4(2.5,2.5,2.5,1.0);
+			//eye=glm::vec4(eye_vector.x(),eye_vector.y(),eye_vector.z(),1.0);
+            //printf(root->getChildren()[2]->getChildren()[4]->getParent()->getName());
+           // transform=root->getChildren()[2]->getChildren()[4]->getGlobalTransform();
+			//transform=root->getChildren()[2]->getGlobalTransform();
+			transform=root->getChildren()[2]->getGlobalTransform();
+            eye=transform*eye;
+            eye_=glm::vec3(eye);
+            gluLookAt((eye_.x/6.0),eye_.y+2.5,(eye_.z/6.0),0,0.8,0,0,1,0);
+            break;
 
     }
-    glMatrixMode(GL_MODELVIEW);
+  
     root->draw();
     glFlush();
 }
