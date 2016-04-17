@@ -5,8 +5,8 @@ CFLAGS=-c -w
 
 all: mesh.out
 
-mesh.out: test.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o
-	$(CC) -g test.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o -o mesh.out -lGL -lGLU -lglut
+mesh.out: test.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o View.o
+	$(CC) -g test.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o View.o -o mesh.out -lGL -lGLU -lglut
 
 test.o: test.cpp 
 	$(CC) $(CFLAGS) test.cpp
@@ -31,8 +31,12 @@ Image.o:Image.cpp
 
 Arcball.o:Arcball.cpp
 	$(CC) $(CFLAGS) Arcball.cpp
-	
+
 Quaternion.o: Quaternion.cpp
 	$(CC) $(CFLAGS)  Quaternion.cpp	
+
+View.o: View.cpp
+	$(CC) $(CFLAGS)  View.cpp
+	
 clean:
 	rm -rf *.o assgn

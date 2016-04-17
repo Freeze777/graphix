@@ -39,8 +39,11 @@ public:
 	void setTransformationMatrix(glm::mat4 mat);
 	void initTransformationMatrix();
 	void printChildren();
+	float * getCentroid();
 	void draw();
 	~SceneNode();
+	glm::mat4 getLocalTransform(){return local_transform;}
+	glm::mat4 getGlobalTransform();
 	char * getName(){return name;}
 	int getId(){return id;}
 	SceneNode * getParent(){return parent;}

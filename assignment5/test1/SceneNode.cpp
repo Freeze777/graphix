@@ -33,7 +33,11 @@ SceneNode::SceneNode(const SceneNode &obj)
 	name=obj.name;
 	id=obj.id;
 }
+float * SceneNode::getCentroid(){
+	return mesh->centroid;
 
+
+}
 SceneNode *  SceneNode::attachChild(SceneNode *  child)
 {
 	child->parent=this;
@@ -98,6 +102,22 @@ void SceneNode::initTransformationMatrix()
 
 }
 
+glm::mat4 SceneNode::getGlobalTransform(){
+
+SceneNode * tmp=parent;
+glm::mat4 mat=glm::mat4(1.0)*local_transform;
+while(parent){
+
+//mat=parent->getLocalTransform()*mat;
+mat=mat*parent->getLocalTransform();
+parent=parent->getParent();
+
+}
+
+
+return mat;
+
+}
 void SceneNode::draw()
 {
 //	printf("%s\n",name);
