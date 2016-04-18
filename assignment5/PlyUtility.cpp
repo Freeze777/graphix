@@ -85,14 +85,14 @@ void PlyUtility::readPlyFile(char *filename)
     }
 
     /* grab and print out the comments in the file */
-   comments = ply_get_comments (ply, &num_comments);
+    comments = ply_get_comments (ply, &num_comments);
 
 
     /* grab and print out the object information */
-   obj_info = ply_get_obj_info (ply, &num_obj_info);
+    obj_info = ply_get_obj_info (ply, &num_obj_info);
 
     /* close the PLY file */
-   ply_close (ply);
+    ply_close (ply);
 }
 
 

@@ -7,50 +7,26 @@ void PlyModel::draw()
   GLuint txture;
   glGenTextures(1,&txture);
   glBindTexture(GL_TEXTURE_2D, txture);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); //scale linearly when image bigger than texture
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); //scale linearly when image smalled than texture
-  glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, texture->sizeX, texture->sizeY,1,
-    GL_RGB, GL_UNSIGNED_BYTE, texture->data);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); //scale linearly when image bigger than img
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); //scale linearly when image smalled than img
+  glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, img->sizeX, img->sizeY,1,GL_RGB, GL_UNSIGNED_BYTE, img->data);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+  double uvCoords[]={0.0,0.0};
 
-
- /* float v_shift=(ply->vy_max - ply->vy_min)/2.0;
-
-
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-
-  glScalef(scale_factor,scale_factor,scale_factor);
-  if(!trans_flag)
-    glTranslatef(-centroid[0],-centroid[1]+v_shift,-centroid[2]);
-  else
-    glTranslatef(-centroid[0]-(dx/scale_factor),-centroid[1]+v_shift-(dy/scale_factor),-centroid[2]-(dz/scale_factor));
-  */
   int fcount=ply->getFaceCount();
   PlyUtility::Face ** fl=ply->getFaceList();
   PlyUtility::Vertex ** vl=ply->getVertexList();
 
-  double uvCoords[]={0.0,0.0};
-
-
   for (int var = 0; var < fcount ; var++) {
 
-   /* if(fl[var]->nverts==3)
-      glBegin(GL_TRIANGLES);
-    else if(fl[var]->nverts==4)
-      glBegin(GL_QUADS);*/
-
     glBegin(GL_POLYGON);
-    float sc=1.0f;
     for (int t = 0; t < fl[var]->nverts; t++)
     {
       int vIndex=fl[var]->verts[t];
-
       glNormal3d(normals_vertex[vIndex].x(),normals_vertex[vIndex].y(),normals_vertex[vIndex].z());
 
-      getUVCoords(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z,uvCoords,0,vIndex);
-
+      getUVCoords(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z,uvCoords);
       glTexCoord2f(uvCoords[0],uvCoords[1]);
 
       glVertex3f(vl[vIndex]->x,vl[vIndex]->y,vl[vIndex]->z);
@@ -61,14 +37,15 @@ void PlyModel::draw()
 
 
 
-  glPopMatrix();
+
 
 
 
 }
+
 void PlyModel::freeTextBuffer(){
-  delete texture;
-  texture=new Image();
+  delete img;
+  img=new Image();
 }
 void PlyModel::convert2Cylindrical( double x,double y,double z,double *res)
 
@@ -85,41 +62,32 @@ void PlyModel::convert2Cylindrical( double x,double y,double z,double *res)
   res[2]=h;
 //  res[2]=h;
 }
-void PlyModel::convert2Circular( double x,double y,double z,double *res)
 
+void PlyModel::getUVCoords( double x,double y,double z,double *uv)
 {
+    if(txtMode==1){
+      double res[]={0,0,0};
+      convert2Cylindrical(x,y,z,res);
+      uv[0]=0.5-(res[1]/M_PI);
+      uv[1]=res[2]/ply->vz_max;
+	}else if(txtMode==0)
+	{
+		uv[0]=x*z/(50);
+		uv[1]=y*z/(50);
+	}else if(txtMode==2)
+	{
+		Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
+  		norml.normalize();
+  		uv[1]=0.5+(atan2(norml.z(),norml.x())/(2*M_PI));
+  		uv[0]=0.5-(asin(norml.y())/M_PI);
 
-  double r=sqrt(x*x+y*y+z*z);
-  double theta=acos(z/r);
-  double phi=atan2(y,x);
+	}
 
-  res[0]=r;
-  res[1]=theta;
-  res[2]=phi;
-//  res[2]=h;
+
 }
-void PlyModel::getUVCoords( double x,double y,double z,double *uv,int mode,int vIndex)
+void PlyModel::readTexture2Buffer(char *filename){
 
-{
-if(mode==0){ //cylindrical
-  double res[]={0,0,0};
-  convert2Cylindrical(x,y,z,res);
-  uv[0]=0.5-(res[1]/M_PI);
-  uv[1]=res[2]/ply->vz_max;
-
-
-}else if(mode==1){ //sphereical
-
-  Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
-  norml.normalize();
-  uv[1]=0.5+(atan2(norml.z(),norml.x())/(2*M_PI));
-  uv[0]=0.5-(asin(norml.y())/M_PI);
-}
-
-// uv[0]*=2;
-//uv[1]*=2;
-
-
+  img=img->loadTexture(filename);
 
 }
 
@@ -170,12 +138,6 @@ if(fl[var]->nverts==3){
 
 }
 }
-void PlyModel::readTexture2Buffer(char *filename){
-
-  texture=texture->loadTexture(filename);
-
-}
-
 void PlyModel::computeCentroid(){
 
   centroid[0]=(ply->vx_max+ply->vx_min)/2.0;

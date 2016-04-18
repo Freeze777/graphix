@@ -24,32 +24,28 @@ void  View::createWindow(char *windowName){
     glColor3f(0.0,1.0,1.0);
 
 }
-void  View::initialize(double dim,int fov){
-
-
+void  View::initialize(){
     glViewport(0,0,screenWidth,screenHeight);
 
-
-    glMatrixMode(GL_PROJECTION);
+   glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fov,screenWidth/screenHeight,dim,20*dim);
+    gluPerspective(70,screenWidth/screenHeight,1,20);
 
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0,0,6, 0,0,0 , 0,1,0);
-    
-    glClearColor(0.0,0.0,0.0,0.0);
-  
+    gluLookAt(2.5,2.5,2.5, 0,0,0 , 0,1,0);
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_STENCIL_TEST);
- 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0); 
     glEnable(GL_LIGHT1); 
     glEnable(GL_LIGHT2);
     glEnable(GL_NORMALIZE);
-   glEnable( GL_TEXTURE_2D );
+    glEnable( GL_TEXTURE_2D );
+ 
+
 
     GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f}; //Color (0.2, 0.2, 0.2)
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
@@ -66,10 +62,10 @@ void  View::initialize(double dim,int fov){
 
 
     // Light values and coordinates
-    GLfloat  lightPos2[] = {0.0f,0.0f, 2*dim, 1.0f };
+    GLfloat  lightPos2[] = {2.5f,2.5f,2.5f, 1.0f };
     GLfloat  specular2[] = { 1.0f, 0.0f, 0.0f, 1.0f};
-    GLfloat  ambientLight2[] = { 1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat spotDir2[3]={0.0f,0.0f,-1.0f};
+    GLfloat  ambientLight2[] = { 1.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat spotDir2[3]={-1.0f,-1.0f,-1.0f};
     glLightfv(GL_LIGHT2,GL_DIFFUSE,ambientLight2);
     glLightfv(GL_LIGHT2,GL_SPECULAR,specular2);
     glLightfv(GL_LIGHT2,GL_POSITION,lightPos2);
@@ -77,11 +73,10 @@ void  View::initialize(double dim,int fov){
 
      // Specific spot effects
     // Cut off angle is 60 degrees
-    glLightf(GL_LIGHT2,GL_SPOT_CUTOFF,30.0f);
+    glLightf(GL_LIGHT2,GL_SPOT_CUTOFF,10.0f);
     // Fairly shiny spot
-    glLightf(GL_LIGHT2,GL_SPOT_EXPONENT,10.0f);
+    glLightf(GL_LIGHT2,GL_SPOT_EXPONENT,1.0f);
     glShadeModel(GL_SMOOTH);
-
  
 
 }

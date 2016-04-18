@@ -68,9 +68,9 @@ public :
     //    x-coordinate, y-coordinate or
     //    z-coordinate of the vector
 
-    double x () const { return _vx ; }
-    double y () const { return _vy ; }
-    double z () const { return _vz ; }
+    double x ()  { return _vx ; }
+    double y ()  { return _vy ; }
+    double z ()  { return _vz ; }
 
     void x (double x)  { _vx=x ; }
     void y (double y)  { _vy=y ; }

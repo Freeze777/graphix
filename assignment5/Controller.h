@@ -15,31 +15,24 @@
 #include "Model.h"
 
 #define texture_files_size 15
+#define speed 200
+
 class Controller
-{
+{   float SCREEN_WIDTH=650,SCREEN_HEIGHT=650;
     Arcball *arcball;
     View *view;
     Model *model;
    
 public:
-    Vector eye_vector;
-    float rollspeed=1.5;
-    float zoomfactor=1.0;
-    float th = 0;
-    float ph = 0;
-    int arcball_on=false;
-    float asp = 1;
-    bool toggle1=false;
-    bool toggle2=false;
-    bool toggle3=false;
-    float dx=0.0,dy=0.0,dz=0.0;
-    GLfloat spotDir2[3]={0.0f,0.0f,-1.0f};
+  
+    Vector *eye_vector;
+    int cnt=0,period=0,cam_toggle=0;
+    bool hooked=false,arcball_on=false,toggle1=false,toggle2=false,toggle3=false;
+     GLfloat spotDir2[3]={0.0f,0.0f,-1.0f};
     GLfloat lightPos0[4]= {0.0,4.0,0.0, 1.0f};
     GLfloat lightPos1[4] = {1.0,1.0,1.0, 0.0f};
-    float SCREEN_WIDTH,SCREEN_HEIGHT;
-    double dim=2.0;
-    int fov =40;
-    GLuint txt[2];
+    
+
     char texture_files[texture_files_size][100]={"textures/apple.bmp","textures/checker.bmp","textures/metal.bmp",
                                                  "textures/redhair.bmp","textures/wood_.bmp","textures/brickwall_.bmp",
                                                 "textures/gravel.bmp","textures/pebbles.bmp","textures/stonewall_.bmp",
@@ -49,16 +42,19 @@ public:
 
    
 Controller(View *v,Model *m) {
-        arcball=new Arcball(SCREEN_WIDTH,SCREEN_HEIGHT,1.5);
+
         view=v;
         model=m;
-        eye_vector.x(0.0);
-        eye_vector.y(0.0);
-        eye_vector.z(10.0);
+        arcball=new Arcball(650,650,1.5);
+        eye_vector=new Vector(2.5,2.5,2.5);
    }
 
     ~Controller(){
+
+        delete view;
+        delete model;
         delete arcball;
+        delete eye_vector;
     }
     void reshape_callback(int w, int h);
     void keyboard_callback(unsigned char key,int x, int y);
@@ -66,6 +62,7 @@ Controller(View *v,Model *m) {
     void display_callback(void);
     void keyboard_special_callback(int key,int x,int y);
     void mouse_motion_callback(int x, int y) ;
+    void idle_callback(void) ;
 
 };
 
