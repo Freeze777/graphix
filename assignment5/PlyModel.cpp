@@ -76,10 +76,10 @@ void PlyModel::getUVCoords( double x,double y,double z,double *uv)
 		uv[1]=y*z/(50);
 	}else if(txtMode==2)
 	{
-		Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
+		  Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
   		norml.normalize();
-  		uv[1]=0.5+(atan2(norml.z(),norml.x())/(2*M_PI));
-  		uv[0]=0.5-(asin(norml.y())/M_PI);
+  		uv[0]=0.5+(atan2(norml.z(),norml.x())/(2*M_PI));
+  		uv[1]=0.5-(asin(norml.y())/M_PI);
 
 	}
 

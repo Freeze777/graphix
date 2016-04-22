@@ -101,26 +101,6 @@ void  Controller::reshape_callback(int w,int h)
 
     arcball->set_width_height(SCREEN_WIDTH,SCREEN_HEIGHT);
     view->set_width_height(SCREEN_WIDTH,SCREEN_HEIGHT);
-
-    /*SCREEN_WIDTH=w;
-    SCREEN_HEIGHT=h;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(fov,SCREEN_WIDTH/SCREEN_HEIGHT,dim,25*dim);
-    glViewport(0,0, SCREEN_WIDTH,SCREEN_HEIGHT);
-
-    glClearStencil(0);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-   
-    gluLookAt(eye_vector->x(),eye_vector->y(),eye_vector->z(), 0,0,0 , 0,1,0);
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
-    glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
-    */
    
     model->draw();
 
@@ -143,7 +123,8 @@ void  Controller::keyboard_special_callback(int key,int x,int y)
 }
 
 void  Controller::keyboard_callback(unsigned char key,int x,int y)
-{   
+{   cube_increm=0;
+    f16_increm=0;
     if (key == 27) exit(0);
     else if (key == '-' && key>1) *eye_vector=*eye_vector*1.1;
     else if (key == '+' && key<179)*eye_vector=*eye_vector*0.9;
@@ -151,6 +132,10 @@ void  Controller::keyboard_callback(unsigned char key,int x,int y)
     else if (key == 's'||key == 'S') toggle2=!toggle2;
     else if (key == 'd'||key == 'D') toggle3=!toggle3;
     else if (key == 'c'||key == 'C')  cam_toggle=(++cam_toggle)%3;
+    else if (key == 'q'||key == 'Q')  cube_increm=-5;
+    else if (key == 'w'||key == 'W')  cube_increm=+5;
+    else if (key == 'e'||key == 'E')  f16_increm=-5;
+    else if (key == 'r'||key == 'R')  f16_increm=+5;
     else return;
     (toggle1)?glDisable(GL_LIGHT0):glEnable(GL_LIGHT0);
     (toggle2)?glDisable(GL_LIGHT1):glEnable(GL_LIGHT1);
@@ -162,36 +147,29 @@ void  Controller::keyboard_callback(unsigned char key,int x,int y)
 
 void Controller::idle_callback(void) {
 
- /*srand(time(NULL));
-    float x = ((rand()%1000+1)-500.0)/20000.0;
-    float y = ((rand()%1000+1)-500.0)/20000.0;
-    float z = ((rand()%1000+1)-500.0)/20000.0;
-    float phi = ((rand()%1000+1)-500.0)/5000.0;
-*/
-
     //model->root->rotateLocalTransformMatrix(0.01,glm::vec3(0,1,0));
     SceneNode * cube=model->root->getChildren()[2];
     cube->rotateLocalTransformMatrix(0.05,glm::vec3(0,1,0));
     SceneNode * f16=model->root->getChildren()[5];
     //f16->translateLocalTransformMatrix(glm::vec3(x,y,z));
     //f16->rotateLocalTransformMatrix(phi,glm::vec3(1,0,0));
-    //f16->rotateLocalTransformMatrix(0.08,glm::vec3(1,0,0));
+    //f16->rotateLocalTransformMatrix(0.05,glm::vec3(1,0,0));
 
-    cnt++;
-    if(cnt==speed)
-        {   cnt=0;
-            period=(++period)%4;
-            switch(period){
-            case 0:f16->rotateLocalTransformMatrix(+135,glm::vec3(0,1,0));
-                    //f16->rotateLocalTransformMatrix(phi,glm::vec3(0,1,-1));
-            break;
-            case 1:
-            break;
-            case 2:f16->rotateLocalTransformMatrix(-135,glm::vec3(0,1,0));
-                //f16->rotateLocalTransformMatrix(phi,glm::vec3(0,-1,1));
-            break;
-            case 3:
-              if(hooked){
+    cube_counter++;
+    f16_counter++;
+    if(cube_counter==cube_speed)
+        {   cube_counter=0;
+            cube_period=(++cube_period)%4;
+            if((cube_speed+cube_increm) > 0)
+            {
+                cube_speed+=cube_increm;
+            }
+
+            cube_increm=0;
+
+            if(cube_period==3){
+
+                if(hooked){
                     SceneNode * porsche=cube->getChildren()[3];
                     porsche=cube->detachChild(porsche);
                     porsche->initTransformationMatrix();
@@ -207,25 +185,46 @@ void Controller::idle_callback(void) {
                     
                 }
                 hooked=!hooked;
-            break;
+            
 
+            }
+        }
+        if(f16_counter==f16_speed)
+        {   f16_counter=0;
+            f16_period=(++f16_period)%4;
+            if((f16_speed+f16_increm) > 0)
+            {
+                f16_speed+=f16_increm;
+            }
+
+            f16_increm=0;
+            switch(f16_period){
+            case 0:f16->rotateLocalTransformMatrix(+135,glm::vec3(0,1,0));
+            break;
+            case 2:f16->rotateLocalTransformMatrix(-135,glm::vec3(0,1,0));
+            break;
             }
             
         }
     
-    switch(period){
-        case 0:cube->translateLocalTransformMatrix(glm::vec3(-8.0/speed,0,0));
-               f16->translateLocalTransformMatrix(glm::vec3(-4.0/speed,0,-4.0/speed));
+    switch(cube_period){
+        case 0:cube->translateLocalTransformMatrix(glm::vec3(-8.0/cube_speed,0,0));
         break;
-        case 1:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/speed));
-             f16->translateLocalTransformMatrix(glm::vec3(-4.0/speed,0,-4.0/speed));
+        case 1:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/cube_speed));
         break;
+        case 2:cube->translateLocalTransformMatrix(glm::vec3(+8.0/cube_speed,0,0));
         break;
-        case 2:cube->translateLocalTransformMatrix(glm::vec3(+8.0/speed,0,0));
-             f16->translateLocalTransformMatrix(glm::vec3(4.0/speed,0,4.0/speed));
+        case 3:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/cube_speed));
         break;
-        case 3:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/speed));
-            f16->translateLocalTransformMatrix(glm::vec3(4.0/speed,0,4.0/speed));
+    }
+     switch(f16_period){
+        case 0:f16->translateLocalTransformMatrix(glm::vec3(-4.0/f16_speed,0,-4.0/f16_speed));
+        break;
+        case 1:f16->translateLocalTransformMatrix(glm::vec3(-4.0/f16_speed,0,-4.0/f16_speed));
+        break;
+        case 2:f16->translateLocalTransformMatrix(glm::vec3(+4.0/f16_speed,0,+4.0/f16_speed));
+        break;
+        case 3:f16->translateLocalTransformMatrix(glm::vec3(+4.0/f16_speed,0,+4.0/f16_speed));
         break;
     }
   glutPostRedisplay();

@@ -121,8 +121,8 @@ if(mode==0){ //cylindrical
 
   Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
   norml.normalize();
- uv[0]=0.5+(atan2(norml.x(),norml.z())/(2*M_PI));
- uv[1]=0.5+(asin(norml.y())/M_PI);
+  uv[0]=0.5+(atan2(norml.x(),norml.z())/(2*M_PI));
+  uv[1]=0.5+(asin(norml.y())/M_PI);
 
 
  

@@ -15,7 +15,7 @@
 #include "Model.h"
 
 #define texture_files_size 15
-#define speed 200
+
 
 class Controller
 {   float SCREEN_WIDTH=650,SCREEN_HEIGHT=650;
@@ -24,11 +24,13 @@ class Controller
     Model *model;
    
 public:
-  
+    int cube_speed =40;
+    int f16_speed= 50;
+    int cube_increm=0,f16_increm=0;
     Vector *eye_vector;
-    int cnt=0,period=0,cam_toggle=0;
+    int cube_counter=0,f16_counter=0,cube_period=0,f16_period=0,cam_toggle=0;
     bool hooked=false,arcball_on=false,toggle1=false,toggle2=false,toggle3=false;
-     GLfloat spotDir2[3]={0.0f,0.0f,-1.0f};
+    GLfloat spotDir2[3]={0.0f,0.0f,-1.0f};
     GLfloat lightPos0[4]= {0.0,4.0,0.0, 1.0f};
     GLfloat lightPos1[4] = {1.0,1.0,1.0, 0.0f};
     

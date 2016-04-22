@@ -5,11 +5,11 @@ CFLAGS=-c -w
 
 all: mesh.out
 
-mesh.out: test.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o View.o Model.o Controller.o
-	$(CC) -g test.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o View.o Model.o Controller.o -o mesh.out -lGL -lGLU -lglut
+mesh.out: main.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o View.o Model.o Controller.o
+	$(CC) -g main.o plyfile.o Vector.o PlyUtility.o PlyModel.o SceneNode.o Image.o Arcball.o Quaternion.o View.o Model.o Controller.o -o mesh.out -lGL -lGLU -lglut
 
-test.o: test.cpp 
-	$(CC) $(CFLAGS) test.cpp
+main.o: main.cpp Vector.h PlyUtility.h PlyModel.h SceneNode.h Image.h Arcball.h Quaternion.h View.h Model.h Controller.h
+	$(CC) $(CFLAGS) main.cpp
 
 plyfile.o: plyfile.c
 	gcc $(CFLAGS) plyfile.c
