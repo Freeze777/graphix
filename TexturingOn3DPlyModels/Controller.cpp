@@ -72,7 +72,7 @@ void  Controller::display_callback() {
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
      
     model->setScaleFactor(dim);
-    model->drawScene(dim,dx,dy,dz);
+    model->drawScene(dim,dx,dy,dz,tex_toggle);
 
     glFlush();
    
@@ -105,7 +105,7 @@ void  Controller::reshape_callback(int w,int h)
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
     
     model->setScaleFactor(dim);
-    model->drawScene(dim,dx,0,dz);
+    model->drawScene(dim,dx,0,dz,tex_toggle);
 
 
 }
@@ -136,10 +136,13 @@ void  Controller::keyboard_callback(unsigned char key,int x,int y)
     else if (key == 'i'||key == 'I') dx-=0.2;
     else if (key == 'j'||key == 'J') dz+=0.2;
     else if (key == 'k'||key == 'K') dz-=0.2;
+    else if (key == 't'||key == 'T') tex_toggle=!tex_toggle;
+    else if (key == 'x'||key == 'X') global_tex_flag=!global_tex_flag;
     else return;
     (toggle1)?glDisable(GL_LIGHT0):glEnable(GL_LIGHT0);
     (toggle2)?glDisable(GL_LIGHT1):glEnable(GL_LIGHT1);
     (toggle3)?glDisable(GL_LIGHT2):glEnable(GL_LIGHT2);
+    (global_tex_flag)?glEnable( GL_TEXTURE_2D ):glDisable( GL_TEXTURE_2D );
     eye_vector=eye_vector*zoomfactor;
     zoomfactor=1.0;
     glutPostRedisplay();

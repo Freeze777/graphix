@@ -26,13 +26,13 @@ public:
 GLfloat scale_factor=1.0;
     PlyUtility *ply;
     Image *texture;
-    void draw(int txtMode,float dx,float dy,float dz,int trans_flag);
+    void draw(int txtMode,float dx,float dy,float dz,int trans_flag,bool tex_toggle);
     void computeNormal();
     void readTexture2Buffer(char *filename,int width,int height);
     void freeTextBuffer();
     void computeCentroid();
     void convert2Cylindrical( double x,double y,double z,double *res);
-    void convert2Circular( double x,double y,double z,double *res);
+    
     void getUVCoords( double x,double y,double z,double *uv,int mode,int vIndex);
     void computeScaleFactor(float dim);		
     PlyModel(PlyUtility *p){

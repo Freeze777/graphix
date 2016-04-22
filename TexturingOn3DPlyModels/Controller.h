@@ -11,7 +11,7 @@
 #include "Vector.h"
 #include "Arcball.h"
 #include "Model.h"
-#define texture_files_size 15
+#define texture_files_size 18
 class Controller
 {
     Arcball *arcball;
@@ -22,6 +22,7 @@ public:
     Vector eye_vector;
     float rollspeed=1.5;
     float zoomfactor=1.0;
+    bool tex_toggle=false,global_tex_flag=true;
     float th = 0;
     float ph = 0;
     int arcball_on=false;
@@ -41,7 +42,8 @@ public:
                                                  "textures/redhair.bmp","textures/wood_.bmp","textures/brickwall_.bmp",
                                                 "textures/gravel.bmp","textures/pebbles.bmp","textures/stonewall_.bmp",
                                                 "textures/wood.bmp","textures/brickwall.bmp","textures/green.bmp",
-                                                "textures/redbrick.bmp","textures/stonewall.bmp","textures/metal_.bmp"};
+                                                "textures/redbrick.bmp","textures/stonewall.bmp","textures/metal_.bmp",
+                                                "textures/world.bmp","textures/bubbles.bmp","textures/goldhair.bmp"};
 
 
    

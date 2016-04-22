@@ -19,7 +19,7 @@ Model(char *filename);
 ~Model();
 
 void readModelsFromFile(char *filename1,char *filename2);
-void drawScene(float dim,float x,float y,float z);
+void drawScene(float dim,float x,float y,float z,bool tex_toggle);
 void drawAxis(float dim);
 void markPoints(float dim);
 void setScaleFactor(float dim); 

@@ -1,19 +1,38 @@
 #include "PlyModel.h"
 
-void PlyModel::draw(int txtMode,float dx,float dy,float dz,int trans_flag)
+void PlyModel::draw(int txtMode,float dx,float dy,float dz,int trans_flag,bool tex_toggle)
 {
 
-
+  GLfloat zPlane[] = { 0.0f, 0.0f, 1.0f, 0.0f};
   GLuint txture;
   glGenTextures(1,&txture);
   glBindTexture(GL_TEXTURE_2D, txture);
+  glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, texture->sizeX, texture->sizeY,1,GL_RGB, GL_UNSIGNED_BYTE, texture->data);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+if(!tex_toggle){
+
+  glDisable(GL_TEXTURE_GEN_S);
+  glDisable(GL_TEXTURE_GEN_T);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); //scale linearly when image bigger than texture
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); //scale linearly when image smalled than texture
-  glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, texture->sizeX, texture->sizeY,1,
-    GL_RGB, GL_UNSIGNED_BYTE, texture->data);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+ 
 
+}
+else{
 
+glEnable(GL_TEXTURE_GEN_S);
+glEnable(GL_TEXTURE_GEN_T);
+//glDepthMask(GL_TRUE);
+//glTexGeni(GL_S, GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
+//glTexGeni(GL_T, GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
+//glTexGenfv(GL_S, GL_OBJECT_PLANE,zPlane);
+//glTexGenfv(GL_T, GL_OBJECT_PLANE,zPlane);
+glTexGeni(GL_S,GL_TEXTURE_GEN_MODE,GL_SPHERE_MAP);
+glTexGeni(GL_T,GL_TEXTURE_GEN_MODE,GL_SPHERE_MAP);
+
+}
 
   float v_shift=(ply->vy_max - ply->vy_min)/2.0;
 
@@ -75,7 +94,7 @@ void PlyModel::convert2Cylindrical( double x,double y,double z,double *res)
 
   double rho=sqrt(x*x+y*y);
   double h=z;
-  double phi=(rho==0)?0:asin(y/rho);
+  double phi=atan2(y,x);
 
 
 
@@ -84,39 +103,31 @@ void PlyModel::convert2Cylindrical( double x,double y,double z,double *res)
   res[2]=h;
 //  res[2]=h;
 }
-void PlyModel::convert2Circular( double x,double y,double z,double *res)
 
-{
-
-  double r=sqrt(x*x+y*y+z*z);
-  double theta=acos(z/r);
-  double phi=atan2(y,x);
-
-  res[0]=r;
-  res[1]=theta;
-  res[2]=phi;
-//  res[2]=h;
-}
 void PlyModel::getUVCoords( double x,double y,double z,double *uv,int mode,int vIndex)
 
 {
 if(mode==0){ //cylindrical
   double res[]={0,0,0};
   convert2Cylindrical(x,y,z,res);
-  uv[0]=0.5-(res[1]/M_PI);
-  uv[1]=res[2]/ply->vz_max;
+  
 
+  uv[1]=(0.5*(res[2]/ply->vz_max))+ 0.5;
+  uv[0]=(0.5+(res[1]/(2*M_PI)));
+
+ 
 
 }else if(mode==1){ //sphereical
 
   Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
   norml.normalize();
-  uv[1]=0.5+(atan2(norml.z(),norml.x())/(2*M_PI));
-  uv[0]=0.5-(asin(norml.y())/M_PI);
+ uv[0]=0.5+(atan2(norml.x(),norml.z())/(2*M_PI));
+ uv[1]=0.5+(asin(norml.y())/M_PI);
+
+
+ 
 }
 
-// uv[0]*=2;
-//uv[1]*=2;
 
 
 

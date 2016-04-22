@@ -36,21 +36,21 @@ glBegin(GL_QUADS);
 glNormal3d(0,1,0);
 glTexCoord2f(0,0);
 glVertex3f(-dim/2,-dim/2,-dim/2);
-glTexCoord2f(0,2);
+glTexCoord2f(0,1);
 glVertex3f(-dim/2,-dim/2,dim/2);
-glTexCoord2f(2,2);
+glTexCoord2f(1,1);
 glVertex3f(dim/2,-dim/2,dim/2);
- glTexCoord2f(2,0);
+ glTexCoord2f(1,0);
 glVertex3f(dim/2,-dim/2,-dim/2);
 /* Ceiling */
 glNormal3d(0,-1,0);
 glTexCoord2f(0,0);
 glVertex3f(-dim/2,dim/2,-dim/2);
-glTexCoord2f(0,2);
+glTexCoord2f(0,1);
 glVertex3f(dim/2,dim/2,-dim/2);
-glTexCoord2f(2,2);
+glTexCoord2f(1,1);
 glVertex3f(dim/2,dim/2,dim/2);
- glTexCoord2f(2,0);
+ glTexCoord2f(1,0);
 glVertex3f(-dim/2,dim/2,dim/2);
     /* Walls */
 /*Front wall*/
@@ -68,11 +68,11 @@ glVertex3f(-dim/2,dim/2,dim/2);
 glNormal3d(0,0,1);
 glTexCoord2f(0,0);
 glVertex3f(-dim/2,-dim/2,-dim/2);
-glTexCoord2f(0,2);
+glTexCoord2f(0,1);
 glVertex3f(dim/2,-dim/2,-dim/2);
-glTexCoord2f(2,2);
+glTexCoord2f(1,1);
 glVertex3f(dim/2,dim/2,-dim/2);
-glTexCoord2f(2,0);
+glTexCoord2f(1,0);
 glVertex3f(-dim/2,dim/2,-dim/2);
 
 /*Right wall*/
@@ -80,22 +80,22 @@ glVertex3f(-dim/2,dim/2,-dim/2);
 glNormal3d(-1,0,0);
 glTexCoord2f(0,0);
 glVertex3f(dim/2,dim/2,dim/2);
-glTexCoord2f(0,2);
+glTexCoord2f(0,1);
 glVertex3f(dim/2,-dim/2,dim/2);
-glTexCoord2f(2,2);
+glTexCoord2f(1,1);
 glVertex3f(dim/2,-dim/2,-dim/2);
-glTexCoord2f(2,0);
+glTexCoord2f(1,0);
 glVertex3f(dim/2,dim/2,-dim/2);
 
 /*Left wall*/
 glNormal3d(1,0,0);
 glTexCoord2f(0,0);
 glVertex3f(-dim/2,dim/2,dim/2);
-glTexCoord2f(0,2);
+glTexCoord2f(0,1);
 glVertex3f(-dim/2,-dim/2,dim/2);
-glTexCoord2f(2,2);
+glTexCoord2f(1,1);
 glVertex3f(-dim/2,-dim/2,-dim/2);
-glTexCoord2f(2,0);
+glTexCoord2f(1,0);
 glVertex3f(-dim/2,dim/2,-dim/2);
 
 glEnd();

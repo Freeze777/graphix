@@ -40,20 +40,20 @@ plymodel1->computeScaleFactor(dim);
 plymodel2->computeScaleFactor(dim);
 
 }
-void Model::drawScene(float dim,float dx,float dy,float dz){
+void Model::drawScene(float dim,float dx,float dy,float dz,bool tex_toggle){
 	drawAxis(5*dim);
 	
     glPushMatrix(); 
     glTranslatef(-1,-7.5,0);
     glStencilFunc(GL_ALWAYS,1, -1);
-	plymodel1->draw(1,dx,dy,dz,1);
+	plymodel1->draw(1,dx,dy,dz,1,tex_toggle);
     glPopMatrix();
 
     glPushMatrix();   
     glTranslatef(1,-7.5,0);
     //glRotatef(-90,1,0,0);
     glStencilFunc(GL_ALWAYS,2, -1);
-    plymodel2->draw(0,dx,dy,dz,0);
+    plymodel2->draw(0,dx,dy,dz,0,tex_toggle);
     glPopMatrix();
     
     glStencilFunc(GL_ALWAYS,3, -1);
