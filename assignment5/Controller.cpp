@@ -136,6 +136,7 @@ void  Controller::keyboard_callback(unsigned char key,int x,int y)
     else if (key == 'w'||key == 'W')  cube_increm=+5;
     else if (key == 'e'||key == 'E')  f16_increm=-5;
     else if (key == 'r'||key == 'R')  f16_increm=+5;
+    else if (key == 'z'||key == 'Z')   detach_request=hooked;
     else return;
     (toggle1)?glDisable(GL_LIGHT0):glEnable(GL_LIGHT0);
     (toggle2)?glDisable(GL_LIGHT1):glEnable(GL_LIGHT1);
@@ -167,20 +168,38 @@ void Controller::idle_callback(void) {
 
             cube_increm=0;
 
-            if(cube_period==3){
+            if(cube_period==detach_period){
 
                 if(hooked){
+                   
                     SceneNode * porsche=cube->getChildren()[3];
                     porsche=cube->detachChild(porsche);
                     porsche->initTransformationMatrix();
-                    porsche->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,-4.0));
+                    glm::vec3 detach_location;
+                    switch(detach_period){
+                        case 0: detach_location=glm::vec3(-4.0,-4.5,4.0);break;
+                        case 1: detach_location=glm::vec3(-4.0,-4.5,-4.0);break;
+                        case 2: detach_location=glm::vec3(4.0,-4.5,-4.0);break;
+                        case 3: detach_location=glm::vec3(4.0,-4.5,4.0);break;
+
+                    }
+                    porsche->translateLocalTransformMatrix(detach_location);
+                    
                     model->root->attachChild(porsche);
                     
                 }
                 else{
                     SceneNode * porsche=model->root->getChildren()[3];
                     porsche=model->root->detachChild(porsche);
-                    porsche->translateLocalTransformMatrix(glm::vec3(-4.0,6.0,4.5));
+                    glm::vec3 attach_location;
+                     switch(detach_period){
+                        case 0: attach_location=glm::vec3(4.0,6.0,-3.5);break;
+                        case 1: attach_location=glm::vec3(4.0,6.0,4.5);break;
+                        case 2: attach_location=glm::vec3(-4.0,6.0,4.5);break;
+                        case 3: attach_location=glm::vec3(-4.0,6.0,-3.5);break;
+
+                    }
+                    porsche->translateLocalTransformMatrix(attach_location);
                     cube->attachChild(porsche);
                     
                 }
@@ -188,9 +207,38 @@ void Controller::idle_callback(void) {
             
 
             }
+            if(detach_request)
+            {   
+
+                 SceneNode * porsche=cube->getChildren()[3];
+                 porsche=cube->detachChild(porsche);
+                 porsche->initTransformationMatrix();
+                
+                 switch(cube_period){
+                    case 0:porsche->translateLocalTransformMatrix(glm::vec3(-4.0,-4.5,4.0));
+                    break;
+                    case 1:porsche->translateLocalTransformMatrix(glm::vec3(-4.0,-4.5,-4.0));
+                    break;
+                    case 2:porsche->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,-4.0));
+                    break;
+                    case 3:porsche->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,4.0));
+                    break;
+
+                 }
+                    
+                    
+                model->root->attachChild(porsche);
+                hooked=!hooked;
+                detach_period=cube_period;
+                detach_request=false;
+            }
+
+            
+
         }
-        if(f16_counter==f16_speed)
-        {   f16_counter=0;
+
+    if(f16_counter==f16_speed)
+    {       f16_counter=0;
             f16_period=(++f16_period)%4;
             if((f16_speed+f16_increm) > 0)
             {
@@ -205,16 +253,16 @@ void Controller::idle_callback(void) {
             break;
             }
             
-        }
+    }
     
     switch(cube_period){
-        case 0:cube->translateLocalTransformMatrix(glm::vec3(-8.0/cube_speed,0,0));
+        case 0:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/cube_speed));
         break;
-        case 1:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/cube_speed));
+        case 1:cube->translateLocalTransformMatrix(glm::vec3(+8.0/cube_speed,0,0));
         break;
-        case 2:cube->translateLocalTransformMatrix(glm::vec3(+8.0/cube_speed,0,0));
+        case 2:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/cube_speed));
         break;
-        case 3:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/cube_speed));
+        case 3:cube->translateLocalTransformMatrix(glm::vec3(-8.0/cube_speed,0,0));
         break;
     }
      switch(f16_period){

@@ -28,8 +28,8 @@ public:
     int f16_speed= 50;
     int cube_increm=0,f16_increm=0;
     Vector *eye_vector;
-    int cube_counter=0,f16_counter=0,cube_period=0,f16_period=0,cam_toggle=0;
-    bool hooked=false,arcball_on=false,toggle1=false,toggle2=false,toggle3=false;
+    int cube_counter=0,f16_counter=0,cube_period=0,f16_period=0,detach_period=0,cam_toggle=0;
+    bool hooked=false,detach_request=false,arcball_on=false,toggle1=false,toggle2=false,toggle3=false;
     GLfloat spotDir2[3]={0.0f,0.0f,-1.0f};
     GLfloat lightPos0[4]= {0.0,4.0,0.0, 1.0f};
     GLfloat lightPos1[4] = {1.0,1.0,1.0, 0.0f};
@@ -65,6 +65,7 @@ Controller(View *v,Model *m) {
     void keyboard_special_callback(int key,int x,int y);
     void mouse_motion_callback(int x, int y) ;
     void idle_callback(void) ;
+    
 
 };
 

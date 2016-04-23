@@ -38,7 +38,8 @@ SceneNode * Model::createSceneGraph(){
     cube->readTexture2Buffer("textures/goldhair.bmp");
     SceneNode * child1=new SceneNode(cube,"cube",2);
     child1->initTransformationMatrix();
-    child1->translateLocalTransformMatrix(glm::vec3(4.0,-3.9,4.0));
+   // child1->translateLocalTransformMatrix(glm::vec3(4.0,-3.9,4.0));
+     child1->translateLocalTransformMatrix(glm::vec3(-4.0,-3.9,4.0));
     root->attachChild(child1);
 
     PlyUtility * util2=new PlyUtility();
@@ -50,7 +51,7 @@ SceneNode * Model::createSceneGraph(){
     porsche->readTexture2Buffer("textures/blood.bmp");
     SceneNode * child2=new SceneNode(porsche,"porsche",3);
     child2->initTransformationMatrix();
-    child2->translateLocalTransformMatrix(glm::vec3(4.0,-4.5,-4.0));
+    child2->translateLocalTransformMatrix(glm::vec3(-4.0,-4.5,4.0));
     root->attachChild(child2);
 
     PlyUtility * util3=new PlyUtility();
