@@ -35,12 +35,6 @@ void PlyModel::draw()
     glEnd();
   }
 
-
-
-
-
-
-
 }
 
 void PlyModel::freeTextBuffer(){
@@ -53,7 +47,7 @@ void PlyModel::convert2Cylindrical( double x,double y,double z,double *res)
 
   double rho=sqrt(x*x+y*y);
   double h=z;
-  double phi=(rho==0)?0:asin(y/rho);
+  double phi=atan2(y,x);
 
 
 
@@ -68,8 +62,8 @@ void PlyModel::getUVCoords( double x,double y,double z,double *uv)
     if(txtMode==1){
       double res[]={0,0,0};
       convert2Cylindrical(x,y,z,res);
-      uv[0]=0.5-(res[1]/M_PI);
-      uv[1]=res[2]/ply->vz_max;
+       uv[1]=(0.5*(res[2]/ply->vz_max))+ 0.5;
+       uv[0]=(0.5+(res[1]/(2*M_PI)));
 	}else if(txtMode==0)
 	{
 		uv[0]=x*z/(50);
@@ -78,8 +72,8 @@ void PlyModel::getUVCoords( double x,double y,double z,double *uv)
 	{
 		  Vector norml(x-centroid[0],y-centroid[1],z-centroid[2]);
   		norml.normalize();
-  		uv[0]=0.5+(atan2(norml.z(),norml.x())/(2*M_PI));
-  		uv[1]=0.5-(asin(norml.y())/M_PI);
+  		uv[0]=0.5+(atan2(norml.x(),norml.z())/(2*M_PI));
+      uv[1]=0.5+(asin(norml.y())/M_PI);
 
 	}
 

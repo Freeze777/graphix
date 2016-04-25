@@ -50,8 +50,7 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     switch(cam_toggle)
     {   
     
-    case 0 ://glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION,spotDir2);
-            gluLookAt(eye_vector->x(),eye_vector->y(),eye_vector->z(),0,0,0,0,1,0);
+    case 0 :gluLookAt(eye_vector->x(),eye_vector->y(),eye_vector->z(),0,0,0,0,1,0);
             break;
     
     case 1 :eye=glm::vec4(2.5,2.5,2.5,1.0);
@@ -64,14 +63,35 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             transform=model->root->getChildren()[2]->getGlobalTransform();
             eye=transform*eye;
             eye_=glm::vec3(eye);
-            gluLookAt((eye_.x/5.5)+0.01,eye_.y+2.5,(eye_.z/5.5)+0.01,0,0.8,0,0,1,0);
+            gluLookAt((eye_.x/5.4),eye_.y+2.4,(eye_.z/5.4),0,0.8,0,0,1,0);
             break;
 
     }
+
+    eye=glm::vec4(2.5,2.5,2.5,1.0);
+    transform=model->root->getChildren()[2]->getGlobalTransform();
+    eye=transform*eye;
+    eye_=glm::vec3(eye);
+
+    eye_.x=eye_.x/5.8;
+    eye_.y=eye_.y+2.5;
+    eye_.z=eye_.z/5.8;
+
+    lightPos3[0]=eye_vector->x();
+    lightPos3[1]=eye_vector->y();
+    lightPos3[2]=eye_vector->z();
+
+    spotDir3[0]=eye_.x-lightPos3[0];
+    spotDir3[1]=eye_.y-lightPos3[1];
+    spotDir3[2]=eye_.z-lightPos3[2];
+
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
+    glLightfv(GL_LIGHT3,GL_POSITION,lightPos3);
+    glLightfv(GL_LIGHT3,GL_SPOT_DIRECTION,spotDir3);
   
     model->draw();
+    model->drawAxis();
     glFlush();
    
    
@@ -94,8 +114,7 @@ void  Controller::reshape_callback(int w,int h)
     glLoadIdentity();
     
     glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION,spotDir2);
-  //  gluLookAt(2.5,2.5,2.5, 0,0,0 , 0,1,0);
-     gluLookAt(eye_vector->x(),eye_vector->y(),eye_vector->z(), 0,0,0 , 0,1,0);
+    gluLookAt(eye_vector->x(),eye_vector->y(),eye_vector->z(), 0,0,0 , 0,1,0);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
 
@@ -131,16 +150,18 @@ void  Controller::keyboard_callback(unsigned char key,int x,int y)
     else if (key == 'a'||key == 'A') toggle1=!toggle1;
     else if (key == 's'||key == 'S') toggle2=!toggle2;
     else if (key == 'd'||key == 'D') toggle3=!toggle3;
+    else if (key == 'f'||key == 'F') toggle4=!toggle4;
     else if (key == 'c'||key == 'C')  cam_toggle=(++cam_toggle)%3;
     else if (key == 'q'||key == 'Q')  cube_increm=-5;
     else if (key == 'w'||key == 'W')  cube_increm=+5;
     else if (key == 'e'||key == 'E')  f16_increm=-5;
     else if (key == 'r'||key == 'R')  f16_increm=+5;
-    else if (key == 'z'||key == 'Z')   detach_request=hooked;
+    else if (key == 'z'||key == 'Z')  detach_request=hooked;
     else return;
     (toggle1)?glDisable(GL_LIGHT0):glEnable(GL_LIGHT0);
     (toggle2)?glDisable(GL_LIGHT1):glEnable(GL_LIGHT1);
     (toggle3)?glDisable(GL_LIGHT2):glEnable(GL_LIGHT2);
+    (toggle4)?glDisable(GL_LIGHT3):glEnable(GL_LIGHT3);
     glutPostRedisplay();
 
 }
@@ -148,19 +169,30 @@ void  Controller::keyboard_callback(unsigned char key,int x,int y)
 
 void Controller::idle_callback(void) {
 
-    //model->root->rotateLocalTransformMatrix(0.01,glm::vec3(0,1,0));
     SceneNode * cube=model->root->getChildren()[2];
-    cube->rotateLocalTransformMatrix(0.05,glm::vec3(0,1,0));
+    cube->rotateLocalTransformMatrix(0.03,glm::vec3(0,1,0));
     SceneNode * f16=model->root->getChildren()[5];
-    //f16->translateLocalTransformMatrix(glm::vec3(x,y,z));
-    //f16->rotateLocalTransformMatrix(phi,glm::vec3(1,0,0));
-    //f16->rotateLocalTransformMatrix(0.05,glm::vec3(1,0,0));
-
+  
     cube_counter++;
     f16_counter++;
     if(cube_counter==cube_speed)
         {   cube_counter=0;
             cube_period=(++cube_period)%4;
+            cube->initTransformationMatrix();
+    switch(cube_period){
+        case 0:  
+        cube->translateLocalTransformMatrix(glm::vec3(-4.0,-3.9,4.0));
+        break;
+        case 1:   
+        cube->translateLocalTransformMatrix(glm::vec3(-4.0,-3.9,-4.0));
+        break;
+        case 2:   
+        cube->translateLocalTransformMatrix(glm::vec3(4.0,-3.9,-4.0));
+        break;
+        case 3:  
+        cube->translateLocalTransformMatrix(glm::vec3(4.0,-3.9,4.0));
+        break;
+    }
             if((cube_speed+cube_increm) > 0)
             {
                 cube_speed+=cube_increm;
@@ -256,13 +288,17 @@ void Controller::idle_callback(void) {
     }
     
     switch(cube_period){
-        case 0:cube->translateLocalTransformMatrix(glm::vec3(0,0,-8.0/cube_speed));
+        case 0:  
+        cube->translateLocalTransformMatrix(glm::vec3(0.2*sin(cube_counter*(32.0/cube_speed)),0,-8.0/cube_speed));
         break;
-        case 1:cube->translateLocalTransformMatrix(glm::vec3(+8.0/cube_speed,0,0));
+        case 1:   
+        cube->translateLocalTransformMatrix(glm::vec3(+8.0/cube_speed,0,0.2*sin(cube_counter*(32.0/cube_speed))));
         break;
-        case 2:cube->translateLocalTransformMatrix(glm::vec3(0,0,+8.0/cube_speed));
+        case 2:   
+        cube->translateLocalTransformMatrix(glm::vec3(0.2*sin(cube_counter*(32.0/cube_speed)),0,+8.0/cube_speed));
         break;
-        case 3:cube->translateLocalTransformMatrix(glm::vec3(-8.0/cube_speed,0,0));
+        case 3:  
+        cube->translateLocalTransformMatrix(glm::vec3(-8.0/cube_speed,0,0.2*sin(cube_counter*(32.0/cube_speed))));
         break;
     }
      switch(f16_period){

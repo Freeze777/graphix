@@ -45,6 +45,7 @@ public:
 	glm::mat4 getLocalTransform(){return local_transform;}
 	glm::mat4 getGlobalTransform();
 	char * getName(){return name;}
+	
 	int getId(){return id;}
 	SceneNode * getParent(){return parent;}
 	std::map<int,SceneNode *> getChildren(){return children;}

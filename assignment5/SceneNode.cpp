@@ -121,6 +121,7 @@ parent=parent->getParent();
 return mat;
 
 }
+
 void SceneNode::draw()
 {
 //	printf("%s\n",name);
@@ -138,6 +139,7 @@ void SceneNode::draw()
 	}
 	glPopMatrix();
 }
+
 /*
     #include <glm/vec3.hpp> // glm::vec3
     #include <glm/vec4.hpp> // glm::vec4

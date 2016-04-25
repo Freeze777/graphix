@@ -16,8 +16,33 @@ void Model::draw(){
   root->draw();
 
 
-}
 
+}
+void Model::drawAxis(){
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(0.0,0.5,0.0);
+    glBegin(GL_LINES);
+    // draw line for x axis
+    glColor3f(1, 0.0, 0.0);
+    glVertex3f(0.5,0.0, 0.0);
+    glVertex3f(-0.5,0.0, 0.0);
+
+    // draw line for y axis
+    glColor3f(0.0,1, 0.0);
+    glVertex3f(0.0,0.5, 0.0);
+    glVertex3f(0.0,-0.5, 0.0);
+
+    // draw line for z axis
+    glColor3f(0.0,0.0,1);
+    glVertex3f(0.0,0.0, 0.5);
+    glVertex3f(0.0,0.0, -0.5);
+
+    glEnd();
+    glPopMatrix();
+    glColor3f(1.0,1.0,1.0);
+}
 SceneNode * Model::createSceneGraph(){
     PlyUtility * util=new PlyUtility();
     PlyModel * floor;

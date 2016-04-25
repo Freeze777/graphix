@@ -17,7 +17,7 @@ void myMouseMotion(int x, int y) ;
 void myIdle(void);
 
 
-float SCREEN_WIDTH=650;
+float SCREEN_WIDTH=750;
 float SCREEN_HEIGHT=650;
 
 View * view;

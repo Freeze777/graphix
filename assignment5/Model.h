@@ -15,6 +15,7 @@ Model();
 
 void draw();
 SceneNode * createSceneGraph();
+void drawAxis();
 
 
 };
