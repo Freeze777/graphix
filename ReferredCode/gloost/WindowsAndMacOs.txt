@@ -1,2 +1,0 @@
-Windows and MacOS are currently not supported. However, gloost is currently used
-on both plattforms and compiles out of the box.

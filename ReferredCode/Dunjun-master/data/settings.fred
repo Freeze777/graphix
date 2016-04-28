@@ -1,7 +1,0 @@
-name: string = "Ginger Bill"
-
-[Window]
-width:  uint = 960
-height: uint = 540
-title: string = "Fred"
-fullscreen: bool = false # Comment
