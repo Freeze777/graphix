@@ -1,4 +1,7 @@
-1.Make the "assignment5" folder as the present working directory in the terminal.
+A scene graph is a general data structure commonly used in modern computer games, which arranges the logical and spatial representation of a graphical scene consisting of collection of nodes in a graph or tree structure.The project involved implementing scene graph (in C++ adhering to MVC architecture) for an animated scene consisting of five objects and four light sources.
+
+
+1.Make the "AnimationUsingSceneGraph" folder as the present working directory in the terminal.
 2.Run "make all" command.
 3.Run the command "./mesh.out".
 
